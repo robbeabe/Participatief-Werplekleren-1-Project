@@ -1,0 +1,34 @@
+---
+
+- hosts: nodes
+  roles:
+    - role: slurm
+      become: yes
+      state: present
+      tags: slurm
+  tasks:
+    - name: reload slurmd service (nodes)
+      become: yes
+      ansible.builtin.service:
+        name: slurmd
+        state: reloaded
+
+- hosts: controller
+  roles:
+    - role: slurm
+      become: yes
+      state: present
+      tags: slurm
+  tasks:
+    - name: reload slurmctld service (controller)
+      become: yes
+      ansible.builtin.service:
+        name: slurmctld
+        state: reloaded
+
+- hosts: all
+  roles:
+    - role: ansible-pull-setup
+      become: yes
+      state: present
+

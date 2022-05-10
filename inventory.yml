@@ -1,0 +1,15 @@
+
+all:
+  vars:
+  children:
+    cluster:
+      children:
+        slurm:
+          hosts:
+          children:
+            controller:
+              hosts:
+                controller-hostname (Anoniem moeten maken):
+            nodes:
+              hosts:
+                nodes[01-05]-hostname (Anoniem moeten maken)

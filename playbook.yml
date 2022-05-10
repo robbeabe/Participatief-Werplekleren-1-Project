@@ -1,0 +1,47 @@
+---
+
+- hosts: nodes
+  roles:
+    - role: slurmd-packages
+      state: present
+
+    - role: slurm
+      become: yes
+      state: present
+      tags: slurm
+
+  tasks:
+    - name: reload slurmd service
+      become: yes
+      ansible.builtin.service:
+        name: slurmd
+        state: reloaded
+
+
+- hosts: controller
+  roles:
+    - role: slurm
+      become: yes
+      state: present
+      tags: slurm
+
+  tasks:
+    - name: reload slurmctld service
+      become: yes
+      ansible.builtin.service:
+        name: slurmctld
+        state: reloaded
+
+- hosts: all
+  roles:
+    - role: ansible-pull-setup
+      become: yes
+      state: present
+
+#  tasks:
+ #   - name: Delete /tmp/.ansible
+  #    become: yes
+   #   file:
+    #    state: absent
+     #   path: /tmp/.ansible
+

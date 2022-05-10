@@ -1,0 +1,12 @@
+---
+
+- name: copy slurm.conf to /etc/slurm-llnl/slurm.conf
+  copy:
+    src: slurm.conf
+    dest: /etc/slurm-llnl/slurm.conf
+
+- name: copy cgroup.conf to /etc/slurm-llnl/cgroup.conf
+  copy:
+    src: cgroup.conf
+    dest: /etc/slurm-llnl/cgroup.conf
+

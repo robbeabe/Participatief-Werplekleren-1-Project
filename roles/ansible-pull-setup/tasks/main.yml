@@ -1,0 +1,32 @@
+---
+
+- name: Install ansible
+  ansible.builtin.package:
+    name: ansible
+    state: present
+
+- name: Creates directory
+  file:
+    path: /root/ansible-pull-files
+    state: directory
+
+- name: copy deploy.key to /root/ansible-pull-files/
+  ansible.builtin.copy:
+    src: deploy.key
+    dest: /root/ansible-pull-files/
+    mode: '0600'
+
+- name: 'Ensure an old job is no longer present. Removes any job that is prefixed by "#Ansible: add ansible-pull" from the crontab'
+  ansible.builtin.cron:
+    name: "add ansible-pull"
+    state: absent
+
+- name: Install cronjob that runs ansible-pull every 5min
+  ansible.builtin.cron:
+    name: "add ansible-pull"
+    minute: "*/10"
+    hour: "*"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    job: "ansible-pull -o --accept-host-key -i inventory.yml --private-key /root/ansible-pull-files/deploy.key -U git@github.com:Anoniem/ansible-fys.git"
